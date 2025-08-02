@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Are We Cooked?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .chat-box {
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff4f81;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff3268;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 80%;
+      margin-top: 20px;
+      background-color: #2e2e2e;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <h1>Chat... are we cooked?</h1>
+    <input type="text" id="userInput" placeholder="Type here..." onkeydown="if(event.key==='Enter') giveAnswer()" />
+    <div id="response" class="message"></div>
+    <button id="askBtn">Ask</button>
+  </div>
+
+  <script>
+    const responses = [
+      "nah we're chill 🧊",
+      "bro we're cooked 🍗",
+      "it's wraps for us fr",
+      "maybe just a lil crispy 😬",
+      "we're medium rare rn",
+      "we ball 💪",
+      "we're in the stew 🥘",
+      "ggs 😵‍💫",
+      "idk but vibes are off 😶‍🌫️",
+      "nah we up 🚀"
+    ];
+
+    function giveAnswer() {
+      const res = document.getElementById('response');
+      const input = document.getElementById('userInput');
+      const inputVal = input.value.trim();
+      if (inputVal === '') return;
+      const randomIndex = Math.floor(Math.random() * responses.length);
+      res.style.opacity = 0;
+      setTimeout(() => {
+        res.textContent = responses[randomIndex];
+        res.style.opacity = 1;
+      }, 200);
+      input.value = '';
+    }
+
+    document.getElementById('askBtn').addEventListener('click', giveAnswer);
+  </script>
+</body>
+</html>
