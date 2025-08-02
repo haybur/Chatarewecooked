@@ -21,9 +21,10 @@
       background-color: #1e1e1e;
       border-radius: 15px;
       padding: 20px;
-      max-width: 90%;
-      width: 500px;
+      width: 90%;
+      max-width: 500px;
       box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      box-sizing: border-box;
     }
     .chat-log {
       text-align: left;
@@ -66,12 +67,13 @@
       margin-top: 20px;
       background-color: #2e2e2e;
       color: white;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
   <div class="chat-box">
-    <h1 style="text-align:center;">Go ahead, ask chat if we're cooked</h1>
+    <h1 style="text-align:center;">Chat... are we cooked?</h1>
     <input type="text" id="userInput" placeholder="Type here..." onkeydown="if(event.key==='Enter') giveAnswer()" />
     <div id="chatLog" class="chat-log"></div>
     <button id="askBtn">Ask</button>
@@ -128,13 +130,11 @@
       const inputVal = input.value.trim();
       if (inputVal === '') return;
 
-      // Show user's message
       const userMsg = document.createElement('div');
       userMsg.className = 'chat-bubble';
       userMsg.textContent = inputVal;
       chatLog.appendChild(userMsg);
 
-      // Show typing...
       const typingMsg = document.createElement('div');
       typingMsg.className = 'chat-bubble typing';
       typingMsg.textContent = 'Chat is typing...';
