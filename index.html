@@ -22,14 +22,27 @@
       border-radius: 15px;
       padding: 20px;
       max-width: 90%;
-      text-align: center;
+      width: 500px;
       box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
-    .message {
+    .chat-log {
+      text-align: left;
       margin-top: 20px;
-      font-size: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .chat-bubble {
+      background-color: #2e2e2e;
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      width: fit-content;
+      max-width: 100%;
+    }
+    .typing {
+      opacity: 0.6;
+      font-style: italic;
     }
     button {
       margin-top: 20px;
@@ -49,7 +62,7 @@
       font-size: 1rem;
       border-radius: 10px;
       border: 1px solid #ccc;
-      width: 80%;
+      width: 100%;
       margin-top: 20px;
       background-color: #2e2e2e;
       color: white;
@@ -58,64 +71,84 @@
 </head>
 <body>
   <div class="chat-box">
-    <h1>Chat... are we cooked?</h1>
-    <div id="response" class="message"></div>
+    <h1 style="text-align:center;">Chat... are we cooked?</h1>
+    <input type="text" id="userInput" placeholder="Type here..." onkeydown="if(event.key==='Enter') giveAnswer()" />
+    <div id="chatLog" class="chat-log"></div>
     <button id="askBtn">Ask</button>
   </div>
 
   <script>
     const responses = [
-  "nah we're chill 🧊",
-  "bro we're cooked 🍗",
-  "it's wraps for us fr",
-  "maybe just a lil crispy 😬",
-  "we're medium rare rn",
-  "we ball 💪",
-  "we're in the stew 🥘",
-  "ggs 😵‍💫",
-  "idk but vibes are off 😶‍🌫️",
-  "nah we up 🚀",
-  "this ain't it chief 😤",
-  "we're deep fried 💀",
-  "we're donezo 🔥",
-  "kinda sus not gonna lie 🧐",
-  "lowkey panicking rn",
-  "this some NPC behavior fr",
-  "we're vibing 🌀",
-  "it's giving... doom 🌪️",
-  "big yikes incoming 😬",
-  "straight up in shambles 💔",
-  "we're thriving (barely) 🌱",
-  "hard launch to the afterlife 😵",
-  "it's a certified L 📉",
-  "we stay losing 💀",
-  "copium levels high 🫠",
-  "hard cooked, soft shell 😩",
-  "full send into oblivion 🚀",
-  "i fear it’s over 🙃",
-  "caught in 4k being cooked 🎥",
-  "it's not looking bussin",
-  "we're overcooked like thanksgiving turkey 🦃",
-  "brain is mashed potatoes rn 🧠🥔",
-  "it's bad but like... aesthetic ✨",
-  "emotionally microwaved 🍽️",
-  "yeah... that’s a no bones day 🦴",
-  "can’t recover from that flop 😩",
-  "this is peak cooked culture 🔥",
-  "we cooked but make it couture 👗",
-  "simmering in consequences 🫕",
-  "404: hope not found 🧍",
-  "might delete later 😶"
+      "nah we're chill 🧊",
+      "bro we're cooked 🍗",
+      "it's wraps for us fr",
+      "maybe just a lil crispy 😬",
+      "we're medium rare rn",
+      "we ball 💪",
+      "we're in the stew 🥘",
+      "ggs 😵‍💫",
+      "idk but vibes are off 😶‍🌫️",
+      "nah we up 🚀",
+      "this ain't it chief 😤",
+      "we're deep fried 💀",
+      "we're donezo 🔥",
+      "kinda sus not gonna lie 🧐",
+      "lowkey panicking rn",
+      "this some NPC behavior fr",
+      "we're vibing 🌀",
+      "it's giving... doom 🌪️",
+      "big yikes incoming 😬",
+      "straight up in shambles 💔",
+      "we're thriving (barely) 🌱",
+      "hard launch to the afterlife 😵",
+      "it's a certified L 📉",
+      "we stay losing 💀",
+      "copium levels high 🫠",
+      "hard cooked, soft shell 😩",
+      "full send into oblivion 🚀",
+      "i fear it’s over 🙃",
+      "caught in 4k being cooked 🎥",
+      "it's not looking bussin",
+      "we're overcooked like thanksgiving turkey 🦃",
+      "brain is mashed potatoes rn 🧠🥔",
+      "it's bad but like... aesthetic ✨",
+      "emotionally microwaved 🍽️",
+      "yeah... that’s a no bones day 🦴",
+      "can’t recover from that flop 😩",
+      "this is peak cooked culture 🔥",
+      "we cooked but make it couture 👗",
+      "simmering in consequences 🫕",
+      "404: hope not found 🧍",
+      "might delete later 😶"
     ];
 
     function giveAnswer() {
-      const res = document.getElementById('response');
-      const randomIndex = Math.floor(Math.random() * responses.length);
-      res.style.opacity = 0;
+      const chatLog = document.getElementById('chatLog');
+      const input = document.getElementById('userInput');
+      const inputVal = input.value.trim();
+      if (inputVal === '') return;
+
+      // Show user's message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-bubble';
+      userMsg.textContent = inputVal;
+      chatLog.appendChild(userMsg);
+
+      // Show typing...
+      const typingMsg = document.createElement('div');
+      typingMsg.className = 'chat-bubble typing';
+      typingMsg.textContent = 'Chat is typing...';
+      chatLog.appendChild(typingMsg);
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      input.value = '';
+
       setTimeout(() => {
-        res.textContent = responses[randomIndex];
-        res.style.opacity = 1;
-      }, 200);
+        const randomIndex = Math.floor(Math.random() * responses.length);
+        typingMsg.textContent = responses[randomIndex];
+        typingMsg.classList.remove('typing');
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }, 1000);
     }
 
     document.getElementById('askBtn').addEventListener('click', giveAnswer);
